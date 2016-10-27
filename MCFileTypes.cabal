@@ -1,0 +1,19 @@
+Name: MCFileTypes
+Version: 0.3
+Cabal-Version:  >= 1.2
+Build-type: Simple
+License: BSD3
+Author: Lucas Salvatore
+Maintainer: lucas.salvatore03@gmail.com
+Homepage: https://github.com/l1salvatore/MCFileTypes
+Category: Algorithms, Data mining, Machine learning
+
+Synopsis: A group of Markov chains for predict some kind of pattern in data types
+Description: A group of Markov chains for predict some kind of pattern in data types
+
+Library
+  Build-Depends: 
+                 learning-hmm >= 0.3.2.2, random >= 1.1, base >= 4.8.2.0,
+                 array >= 0.5.1.0, random-fu >= 0.2.6.2, bytestring >= 0.10.6.0
+  Exposed-modules:
+                 MCByteString
