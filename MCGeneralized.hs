@@ -11,27 +11,28 @@ import Data.Foldable
 import System.Random
 
 
-class (Eq a,Show a) => MarkovChain a where
+class MarkovChain a where
        elements :: [a]
-       trainMarkovChain :: [a] -> RVarT Data.Functor.Identity.Identity (HMM a a)
+       trainMarkovChain :: [a] ->  RVar (HMM a a)
+{-
+instance (Eq a) => (MarkovChain a) where
+       trainMarkovChain = trainMarkovChainDefault
+-}
 
-
-trainMarkovChainDefault :: (MarkovChain a) => [a] -> RVarT Data.Functor.Identity.Identity (HMM a a)
+trainMarkovChainDefault :: (Eq a,MarkovChain a) => [a] -> RVar (HMM a a)
 trainMarkovChainDefault xs = do mc <- Learning.HMM.init elements xs
                                 return $ fst (baumWelch' mc xs)
 
-test :: (MarkovChain a) => Int -> RVarT Data.Functor.Identity.Identity (HMM a a) -> IO ()
+test :: (Show a,MarkovChain a) => Int -> RVar (HMM a a) -> IO ()
 test n trained = do mc <- runRVar trained StdRandom
-                    r  <- runRVar (simulate mc n) StdRandom
+                    r  <- runRVar (simulate mc 50) StdRandom
                     print $ snd r
  
 instance MarkovChain Char where
        elements = Data.List.map chr [0 .. 33]
-       trainMarkovChain = trainMarkovChainDefault 
-    
-instance MarkovChain Int where
-       elements = [0 .. 600]
        trainMarkovChain = trainMarkovChainDefault
 
 
-
+instance MarkovChain Int where
+       elements = [0 .. 600]
+       trainMarkovChain = trainMarkovChainDefault
