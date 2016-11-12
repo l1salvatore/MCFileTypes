@@ -5,34 +5,28 @@ import Data.Random
 import Data.Char
 import Data.Array
 import Data.List
-import Data.ByteString
 import Data.Functor.Identity
 import Data.Foldable
 import System.Random
 
+rmdups :: (Ord a, Show a) => [a] -> [a]
+rmdups = map head . group . sort 
 
-class MarkovChain a where
-       elements :: [a]
-       trainMarkovChain :: [a] ->  RVar (HMM a a)
-{-
-instance (Eq a) => (MarkovChain a) where
-       trainMarkovChain = trainMarkovChainDefault
--}
+train xs = do mc <- Learning.HMM.init states inputs
+              return $ fst (baumWelch' mc xs)
+          where inputs = rmdups xs
+                states = [ 1 .. length inputs ]
 
-trainMarkovChainDefault :: (Eq a,MarkovChain a) => [a] -> RVar (HMM a a)
-trainMarkovChainDefault xs = do mc <- Learning.HMM.init elements xs
-                                return $ fst (baumWelch' mc xs)
+retrain mc xs = return $ fst (baumWelch' mc xs)
 
-test :: (Show a,MarkovChain a) => Int -> RVar (HMM a a) -> IO ()
 test n trained = do mc <- runRVar trained StdRandom
-                    r  <- runRVar (simulate mc 50) StdRandom
+                    r  <- runRVar (simulate mc n) StdRandom
                     print $ snd r
- 
-instance MarkovChain Char where
-       elements = Data.List.map chr [0 .. 33]
-       trainMarkovChain = trainMarkovChainDefault
 
 
-instance MarkovChain Int where
-       elements = [0 .. 600]
-       trainMarkovChain = trainMarkovChainDefault
+
+
+-- problemas, No podemos reentrenar la cadena de Markov con un nuevo estado de entre los posibles
+-- ejemplo:
+-- do mc <- runRVar (train [2,3]) StdRandom
+--    mc' <- runRVar (fst (baumWelch' mc [3,5]))
