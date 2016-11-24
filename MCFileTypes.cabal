@@ -14,6 +14,7 @@ Description: A group of Markov chains for predict some kind of pattern in data t
 Library
   Build-Depends: 
                  learning-hmm >= 0.3.2.2, random >= 1.1, base >= 4.8.2.0,
-                 array >= 0.5.1.0, random-fu >= 0.2.6.2, bytestring >= 0.10.6.0
+                 array >= 0.5.1.0, random-fu >= 0.2.6.2, bytestring >= 0.10.6.0,
+                 double-conversion >= 2.0.1.0, binary >= 0.7.5.0
   Exposed-modules:
-                 MCByteString
+                 MCGeneralized

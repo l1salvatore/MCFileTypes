@@ -18,7 +18,7 @@ data PngInterlaceMethod =
 
       -- | Use the Adam7 ordering, see `adam7Reordering`
     | PngInterlaceAdam7
-    deriving (Enum, Show,Eq)
+    deriving (Enum, Show,Eq,Ord)
 -- Por ahora los campos son independientes entre si
 -- Png Header
 
@@ -64,6 +64,15 @@ chunkType = intercalate "_" ["gAMA","IDAT","IEND","gAMA","IDAT","IEND","PLTE","t
                              "IEND","gAMA","sBIT","PLTE","IDAT","IEND","gAMA","sBIT","PLTE","IDAT","IEND",
                              "gAMA","IDAT","IEND","gAMA","IDAT","IEND","gAMA","IDAT","IDAT","IDAT","IDAT",
                              "IEND","gAMA","sBIT","PLTE","IDAT","IEND"]
+
+
+test1 = test 5 (train pngHeaderInts)
+
+test2 = test 1 (train colourType)
+
+test3 = test 1 (train interlaceMethod)
+
+test4 = test 9 (train chunkType)
 {-
 
 
