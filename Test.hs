@@ -73,9 +73,11 @@ test2 = test 1 (train colourType)
 test3 = test 1 (train interlaceMethod)
 
 test4 = test 9 (train chunkType)
+
+
 {-
 
-
+save1 = savemc (train pngHeaderInts)
 
 
 -}

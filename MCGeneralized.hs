@@ -42,5 +42,8 @@ instance Binary a => Binary (HMM Int a) where
          get = undefined {- TODO -}
 
 mc2ByteStringFile :: Binary a => HMM Int a -> IO ()
-mc2ByteStringFile hmm = encodeFile "MarkovChainFile" hmm
+mc2ByteStringFile mc = encodeFile "MarkovChainFile" mc
+
+savemc trained = do mc <- runRVar trained StdRandom
+                    mc2ByteStringFile mc
 
